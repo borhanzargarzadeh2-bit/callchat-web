@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CallChat</title>
+</head>
+<body>
+  <h1>Hello! Welcome to CallChat!</h1>
+  <p>Please select your language:</p>
+
+  <select id="language">
+    <option value="en">English</option>
+    <option value="fa">فارسی</option>
+    <option value="de">Deutsch</option>
+    <option value="fr">Français</option>
+  </select>
+  <button onclick="selectLanguage()">Select</button>
+
+  <div id="nextStep" style="display:none; margin-top:20px;">
+    <p id="askInfo">Please write your email</p>
+    <input type="text" id="userInput" placeholder="Email">
+    <button onclick="login()">Continue</button>
+  </div>
+
+  <script>
+    let translations = {
+      en: {
+        welcome: "Hello! Welcome to CallChat!",
+        selectLang: "Please select your language:",
+        askInfo: "Please write your email"
+      },
+      fa: {
+        welcome: "سلام! به کال‌چت خوش آمدید!",
+        selectLang: "لطفا زبان خود را انتخاب کنید:",
+        askInfo: "لطفا ایمیل خود را وارد کنید"
+      },
+      de: {
+        welcome: "Hallo! Willkommen bei CallChat!",
+        selectLang: "Bitte wählen Sie Ihre Sprache:",
+        askInfo: "Bitte geben Sie Ihre E-Mail ein"
+      },
+      fr: {
+        welcome: "Bonjour! Bienvenue sur CallChat!",
+        selectLang: "Veuillez sélectionner votre langue:",
+        askInfo: "Veuillez écrire votre email"
+      }
+    };
+
+    function selectLanguage() {
+      let lang = document.getElementById("language").value;
+      document.querySelector("h1").innerText = translations[lang].welcome;
+      document.querySelector("p").innerText = translations[lang].selectLang;
+      document.getElementById("askInfo").innerText = translations[lang].askInfo;
+      document.getElementById("nextStep").style.display = "block";
+    }
+
+    function login() {
+      let email = document.getElementById("userInput").value;
+      alert("Logging in with: " + email);
+      // اینجا بعداً وصلش می‌کنیم به callchat-server
+    }
+  </script>
+</body>
+</html>
