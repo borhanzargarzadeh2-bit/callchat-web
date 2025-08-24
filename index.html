@@ -4,62 +4,124 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CallChat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      background: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    #chat-box {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background: #fff;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .message {
+      margin: 5px 0;
+      padding: 8px 12px;
+      border-radius: 8px;
+      max-width: 70%;
+    }
+
+    .user {
+      background: #DCF8C6;
+      align-self: flex-end;
+    }
+
+    .bot {
+      background: #eee;
+      align-self: flex-start;
+    }
+
+    #input-area {
+      display: flex;
+      padding: 10px;
+      background: #fafafa;
+      border-top: 1px solid #ddd;
+    }
+
+    #message-input {
+      flex: 1;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    #send-btn {
+      margin-left: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    #send-btn:hover {
+      background: #45a049;
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello! Welcome to CallChat!</h1>
-  <p>Please select your language:</p>
+  <header>
+    CallChat 💬
+  </header>
 
-  <select id="language">
-    <option value="en">English</option>
-    <option value="fa">فارسی</option>
-    <option value="de">Deutsch</option>
-    <option value="fr">Français</option>
-  </select>
-  <button onclick="selectLanguage()">Select</button>
+  <div id="chat-box"></div>
 
-  <div id="nextStep" style="display:none; margin-top:20px;">
-    <p id="askInfo">Please write your email</p>
-    <input type="text" id="userInput" placeholder="Email">
-    <button onclick="login()">Continue</button>
+  <div id="input-area">
+    <input type="text" id="message-input" placeholder="Type your message..." />
+    <button id="send-btn">Send</button>
   </div>
 
   <script>
-    let translations = {
-      en: {
-        welcome: "Hello! Welcome to CallChat!",
-        selectLang: "Please select your language:",
-        askInfo: "Please write your email"
-      },
-      fa: {
-        welcome: "سلام! به کال‌چت خوش آمدید!",
-        selectLang: "لطفا زبان خود را انتخاب کنید:",
-        askInfo: "لطفا ایمیل خود را وارد کنید"
-      },
-      de: {
-        welcome: "Hallo! Willkommen bei CallChat!",
-        selectLang: "Bitte wählen Sie Ihre Sprache:",
-        askInfo: "Bitte geben Sie Ihre E-Mail ein"
-      },
-      fr: {
-        welcome: "Bonjour! Bienvenue sur CallChat!",
-        selectLang: "Veuillez sélectionner votre langue:",
-        askInfo: "Veuillez écrire votre email"
-      }
-    };
+    const chatBox = document.getElementById("chat-box");
+    const input = document.getElementById("message-input");
+    const sendBtn = document.getElementById("send-btn");
 
-    function selectLanguage() {
-      let lang = document.getElementById("language").value;
-      document.querySelector("h1").innerText = translations[lang].welcome;
-      document.querySelector("p").innerText = translations[lang].selectLang;
-      document.getElementById("askInfo").innerText = translations[lang].askInfo;
-      document.getElementById("nextStep").style.display = "block";
+    function addMessage(text, sender) {
+      const msg = document.createElement("div");
+      msg.classList.add("message", sender);
+      msg.textContent = text;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    function login() {
-      let email = document.getElementById("userInput").value;
-      alert("Logging in with: " + email);
-      // اینجا بعداً وصلش می‌کنیم به callchat-server
-    }
+    sendBtn.addEventListener("click", () => {
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage(text, "user");
+      input.value = "";
+
+      // اینجا بعدا به سرور وصل می‌کنیم 👇
+      setTimeout(() => {
+        addMessage("جواب ربات به: " + text, "bot");
+      }, 500);
+    });
+
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendBtn.click();
+    });
   </script>
 </body>
 </html>
+
